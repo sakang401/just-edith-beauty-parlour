@@ -1,0 +1,80 @@
+JUST EDITH BEAUTY PARLOUR — FIXED LOCAL SETUP
+
+1. Install XAMPP and START both Apache and MySQL.
+2. Copy this folder to exactly:
+   C:\xampp\htdocs\justedith-beauty-parlour
+3. Open http://localhost/phpmyadmin/
+4. Import database/justedith_full.sql into MySQL.
+5. Import database/upgrade_shop.sql into the same database to enable the store cart, wallet balance, orders, notifications, and editable sale header.
+   - The included SQL already contains the store category column.
+   - Existing databases are also migrated automatically when the admin opens Style Photos.
+6. In Command Prompt:
+   cd C:\xampp\htdocs\justedith-beauty-parlour\frontend
+   npm install
+   npm run dev
+7. Open http://localhost:5173/
+
+IMPORTANT API FIX
+The frontend now uses the Vite /api proxy while running on port 5173. Vite forwards API requests to:
+http://localhost/justedith-beauty-parlour/backend/api
+This avoids the previous hard-coded browser connection problem.
+
+QUICK APACHE/PHP TEST
+Open this in Chrome while XAMPP Apache + MySQL are running:
+http://localhost/justedith-beauty-parlour/backend/api/health.php
+You should see JSON containing:
+{"success":true,"php":"...","database":"connected"}
+If Chrome says "site can't be reached", Apache is not running or the project path is wrong.
+
+CUSTOMER PAGES
+/login
+/register
+/account
+
+ADMIN
+/admin
+Default PIN: 1234. Change backend/config/admin.php before public deployment.
+
+STORE
+The public website now has a Store section for Braids and Wigs.
+Admin > Style Photos lets the admin:
+- choose Braids or Wigs
+- enter a style title
+- upload JPG, PNG or WebP images
+- view uploaded store images
+- delete store images
+
+Uploaded images are stored in:
+backend/uploads/styles/
+
+PROVIDER
+/provider
+Default PIN: 1234. Change backend/config/provider.php before public deployment.
+
+BOOKING/PAYMENT
+- Customer must be logged in.
+- Customer selects a service and sees the 50% deposit amount.
+- Customer pays the deposit via M-Pesa to +254 756 617868.
+- Customer enters the exact amount and M-Pesa transaction code.
+- The booking is saved as pending payment verification.
+- The booking creates a private chat room.
+- Customer can send messages and a preferred plaiting/style reference photo.
+
+
+SHOP UPDATES
+- User avatars use fixed circular sizing and cover-cropping, with a safe initial fallback if an image fails to load.
+- WhatsApp shortcut is available beside the customer account controls.
+- Customers have a notification bell for booking, chat and store-order updates.
+- Admin has a Notifications dashboard for new users, bookings and store orders.
+- The store heading is now “Braids and Wigs on Sale” and can be edited from Admin > Style Photos.
+- Admin can set/edit sale prices and original prices for each braid/wig.
+- Customers can add sale styles to a cart and checkout with M-Pesa, Visa payment reference, or wallet balance.
+- Wallet payments deduct from the customer's saved wallet balance immediately. M-Pesa/Visa are recorded as pending until the configured payment provider verifies them.
+
+FINANCE / PROFIT & LOSS UPGRADE
+1. Import database/upgrade_finance.sql after the existing Just Edith database upgrades.
+2. This adds buying prices for braids/wigs, product inventory (including oil), manual sales, expenses (rent/tools/etc.), and cost snapshots for store orders.
+3. Open Admin -> Finance to enter buying/selling prices, stock, rent, tools and other expenses.
+4. Record manual oil sales under "Record a product sale". The system deducts stock and calculates the sale margin.
+5. The Finance dashboard calculates revenue, buying cost/COGS, gross profit, expenses and net profit/loss for the selected date range.
+6. Only paid store orders and verified booking deposits are counted as revenue. Pending M-Pesa/Visa store orders are excluded until verified.

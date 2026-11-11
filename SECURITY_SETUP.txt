@@ -1,0 +1,22 @@
+JUST EDITH SECURITY NOTES
+
+Implemented:
+- Customer-only access for bookings, reviews, private chat, wallet/notifications and checkout APIs.
+- Private chat now verifies both the authenticated user and their own booking.
+- Admin dashboard uses a server-side session instead of trusting a browser-stored PIN.
+- CSRF protection for authenticated state-changing requests.
+- Prepared statements are retained throughout data access; user-controlled SQL fragments are not interpolated.
+- Login/admin login rate limiting.
+- Secure HttpOnly/SameSite session cookies and security response headers.
+- Password hashing with password_hash/password_verify.
+- Strong password rules, repeat-password validation and mandatory Terms & Conditions.
+- Upload MIME/type and size checks plus PHP execution blocking in upload folders.
+- Cart/private chat state is cleared on customer logout.
+
+ADMIN LOGIN
+For the supplied local XAMPP build, the initial admin password is provided separately with this handoff. Do not store it in source control.
+
+Change it before public deployment. For production, set JUSTEDITH_ADMIN_PASSWORD_HASH in the PHP/Apache environment. Do not put a plaintext admin password in source control.
+
+IMPORTANT
+After replacing the project, visit the site once so backend/config/db.php can apply the users-table security migration (terms_accepted and terms_accepted_at).
